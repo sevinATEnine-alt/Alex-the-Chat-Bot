@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        <style>
+            * {
+                font-family: 'Roboto';
+            }
+            #messages {
+                overflow: scroll;
+                width: 800px;
+                height: 500px;
+                border: 1px solid black;
+            }
+            #userinput {
+                overflow: scroll;
+                width: 800px;
+                height: 100px;
+                border: 1px solid black;
+            }
+            body {
+                margin: 0 auto;
+                max-width: 800px;
+                padding: 0 20px;
+            }
+    
+            .container {
+                border: 2px solid #dedede;
+                background-color: #f1f1f1;
+                border-radius: 5px;
+                padding: 10px;
+                margin: 10px 10px;
+            }
+    
+            .darker {
+                border-color: #ccc;
+                background-color: #ddd;
+            }
+    
+            .darker span {
+                border-color: #ccc;
+                background-color: #ddd;
+                float: right;
+                text-align: right;
+                margin-left: 90%;
+                margin-right:0px;
+            }
+    
+            .darker p {
+                border-color: #ccc;
+                background-color: #ddd;
+                float: right;
+    
+            }
+    
+            .container::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
+    
+            .container span {
+                float: left;
+                max-width: 60px;
+                width: 100%;
+                margin-right: 20px;
+                border-radius: 50%;
+                font-size: 22px;
+            }
+    
+            .container span.right {
+                float: right;
+                margin-left: 20px;
+                margin-right:0;
+            }
+    
+            .time-right {
+                float: right;
+                color: #aaa;
+            }
+    
+            .time-left {
+                float: left;
+                color: #999;
+            }
+
+
+            #input {
+                border-radius: 5px;
+                padding: 10px;
+                margin: 30px 10px;
+                width: 700px;
+            }
+            #runButton {
+                border-radius: 5px;
+                padding: 10px;
+                padding-right: 15px;
+                width: 20px !important;
+                border: 1px solid black;
+            }
+            #runButton:disabled {
+                border: 1px solid gray;
+            }
+        </style>
+    </head>
+    <body>
+    
+    <h2>Chat Messages</h2>
+    <div id='messages'>
+        
+    </div>
+    <div id='userinput'>
+        <input id='input' onchange='question(this.value);'><button onclick='question(document.getElementById("input").value);' id='runButton'>&gt;&nbsp;</button>
+    </div>
+    <script>
+        var messages = document.getElementById('messages');
+        var input = document.getElementById('input');
+        var button =document.getElementById('runButton');
+        
+        function write(text) {
+            try {
+            messages.innerHTML +=`<div class="container">
+          <span>Alex</span>
+          <p>${text}</p>
+        </div>`;
+            } catch(err) {
+                alert(err)
+            }
+        }
+        
+        function userWrite(text) {
+            try{
+            messages.innerHTML +=`<div class="container darker">
+          <span>You</span>
+          <p>${text}</p>
+        </div>`;
+            } catch(err) {
+                alert(err)
+            }
+        }
+        
+        function startThink() {
+            input.value = 'Thinking...';
+            input.disabled = true;
+            button.disabled = true;
+        }
+
+        function stopThink() {
+            input.value = '';
+            input.disabled = false;
+            button.disabled = false;
+        }
+        try {
+        
+        write('Hello, my name is Alex. I am an AI ChatBot programmed using natural language libraries. Thinks you can ask me typically start with who, what, where, why, when, how. What can I assist you with today?');
+        } catch(err) {
+            alert(err);
+        }
+
+        function question(data) {
+            try {
+                userWrite(data);
+                startThink();
+    
+                sentances = data.split(/\.|\?|\!/);
+                for (i of sentances) {
+                    try {
+                        j = i.replace(',', '').split(' ');
+                        write(j.join(' '));
+                        switch(j[0].toLowerCase()) {
+                            case "who":
+                                break;
+                            case "what":
+                                break;
+                            case "where":
+                                break;
+                            case "why":
+                                break;
+                            case "when":
+                                break;
+                            case "how":
+                                break;
+                            default:
+                                fetch('./info.json')
+                                .then(response => response.json())
+                                .then(json => write(json))
+                                .catch(err => write(err))
+                        }
+                    } catch(err) {
+                        write(err);
+                    }
+                }
+                stopThink();
+            } catch(err) {
+                alert(err);
+            }
+        }
+        
+    </script>
+    </body>
+    
+</html>
