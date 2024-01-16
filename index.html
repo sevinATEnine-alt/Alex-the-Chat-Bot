@@ -158,6 +158,12 @@
             alert(err);
         }
 
+
+        var loadedData = {
+
+        }
+
+
         function question(data) {
             try {
                 userWrite(data);
@@ -168,22 +174,19 @@
                     try {
                         j = i.replace(',', '').split(' ');
                         write(j.join(' '));
-                        switch(j[0].toLowerCase()) {
-                            case "who":
-                                break;
-                            case "what":
-                                break;
-                            case "where":
-                                break;
-                            case "why":
-                                break;
-                            case "when":
-                                break;
-                            case "how":
-                                break;
-                            default:
-                                write("I'm sorry, but I do not know how to answer that question. Please try reformatting it.")
+
+                        if(!loadedData.questions) {
+                            loadedData.questions = loadBotData('questions');
                         }
+
+
+                        if(['who', 'what', 'where', 'why', 'when', 'how'].includes(j[0].toLowerCase())) {
+                            
+                        } else {
+                            write("I'm sorry, but I do not know how to answer that question. Please try reformatting it.")
+                        }
+                                                            
+                        
                     } catch(err) {
                         write(err);
                     }
