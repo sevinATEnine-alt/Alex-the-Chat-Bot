@@ -182,10 +182,7 @@
                             case "how":
                                 break;
                             default:
-                                fetch('./info.json')
-                                .then(response => response.json())
-                                .then(json => write(json))
-                                .catch(err => write(err))
+                                write("I'm sorry, but I do not know how to answer that question. Please try reformatting it.")
                         }
                     } catch(err) {
                         write(err);
