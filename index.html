@@ -166,6 +166,10 @@
 
 
         function question(data) {
+            if(document.getElementById("input").value.length < 1) {
+                return;
+            }
+            
             try {
                 userWrite(data);
                 startThink();
@@ -190,6 +194,12 @@
                                         subject = j.slice(3).join(' ').toLowerCase();
                                     }
 
+                                } else if(j[2].toLowerCase() == 'your' && j[1].toLowerCase() == 'is') {
+                                    if(j[3].toLowerCase().length > 0) {
+                                        action = 'find-personal-concept';
+                                        subject = j.slice(3).join(' ').toLowerCase();
+                                    }
+
                                 } else {
                                     if(j[2].toLowerCase().length > 0) {
                                         action = 'find-concept';
@@ -207,8 +217,8 @@
 
                         if(action.length > 0) {
                             write((action + ', ' + subject))
-                            messages.scrollTo(0, messages.scrollHeight)
                         };
+                        messages.scrollTo(0, messages.scrollHeight)
                                                             
                         
                     } catch(err) {
