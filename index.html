@@ -113,6 +113,7 @@
     <div id='userinput'>
         <input id='input' onchange='question(this.value);'><button onclick='question(document.getElementById("input").value);' id='runButton'>&gt;&nbsp;</button>
     </div>
+    <script src="information.js"></script>
     <script>
         var messages = document.getElementById('messages');
         var input = document.getElementById('input');
@@ -153,14 +154,14 @@
         }
         try {
         
-        write('Hello, my name is Alex. I am an AI ChatBot programmed using natural language libraries. Thinks you can ask me typically start with who, what, where, why, when, how. What can I assist you with today?');
+        write('Hello, my name is Alex. I am an AI ChatBot programmed using natural language libraries. Things you can ask me typically start with who, what, where, why, when, how. What can I assist you with today?');
         } catch(err) {
             alert(err);
         }
 
 
-        var loadedData = {
-
+        var information = {
+            
         }
 
 
@@ -173,18 +174,41 @@
                 for (i of sentances) {
                     try {
                         j = i.replace(',', '').split(' ');
-                        write(j.join(' '));
+                        // write(j.join(' '));
 
-                        if(!loadedData.questions) {
-                            loadedData.questions = loadBotData('questions');
-                        }
+                        var firstWord = j[0].toLowerCase();
+
+                        var action = '';
+                        var subject = '';
 
 
                         if(['who', 'what', 'where', 'why', 'when', 'how'].includes(j[0].toLowerCase())) {
-                            
+                            if (firstWord === 'what' | firstWord === 'how') {
+                                if(j[2].toLowerCase() == 'the' && j[1].toLowerCase() == 'is') {
+                                    if(j[3].toLowerCase().length > 0) {
+                                        action = 'find-concept';
+                                        subject = j.slice(3).join(' ').toLowerCase();
+                                    }
+
+                                } else {
+                                    if(j[2].toLowerCase().length > 0) {
+                                        action = 'find-concept';
+                                        subject = j.slice(2).join(' ').toLowerCase();
+                                    }
+                                }
+                            }
+                            //  write(j.slice(1).join(' '))
+                        } else if (j[0].length < 1) {
                         } else {
                             write("I'm sorry, but I do not know how to answer that question. Please try reformatting it.")
                         }
+
+                        // write(j.length)
+
+                        if(action.length > 0) {
+                            write((action + ', ' + subject))
+                            messages.scrollTo(0, messages.scrollHeight)
+                        };
                                                             
                         
                     } catch(err) {
